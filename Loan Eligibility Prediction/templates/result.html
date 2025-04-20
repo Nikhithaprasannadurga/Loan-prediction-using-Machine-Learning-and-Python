@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Eligibility Result</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Loan Eligibility Result</h2>
+        <div id="resultMessage" class="result-box">
+            <!-- The loan eligibility result will be dynamically displayed here -->
+        </div>
+        <a href="index.html" class="back-button">Check Another Loan</a>
+    </div>
+
+    <script>
+        // Fetch the result dynamically from query parameters or backend
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            const result = params.get("result");
+
+            const resultMessage = document.getElementById("resultMessage");
+            if (result) {
+                resultMessage.textContent = result;
+            } else {
+                resultMessage.textContent = "Unable to fetch the result. Please try again.";
+            }
+        });
+    </script>
+</body>
+</html>

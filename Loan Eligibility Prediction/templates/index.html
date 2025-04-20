@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Eligibility Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Loan Eligibility Prediction</h2>
+        
+        <!-- Form for Personal Information -->
+        <form id="personalInfoForm">
+            <h3>Personal Information</h3>
+            
+            <label for="gender">Gender</label>
+            <select id="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+
+            <label for="married">Married</label>
+            <select id="married" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+
+            <label for="dependents">Dependents</label>
+            <input type="number" id="dependents" required min="0" placeholder="Number of dependents">
+
+            <label for="education">Education</label>
+            <select id="education" required>
+                <option value="graduate">Graduate</option>
+                <option value="not graduate">Not Graduate</option>
+            </select>
+        </form>
+        
+        <!-- Form for Loan Details -->
+        <form id="loanDetailsForm">
+            <h3>Loan Details</h3>
+            
+            <label for="income">Monthly Income:</label>
+            <input type="number" id="income" required min="0" placeholder="Enter your income">
+
+            <label for="loanAmount">Loan Amount:</label>
+            <input type="number" id="loanAmount" required min="0" placeholder="Enter the loan amount">
+
+            <label for="creditScore">Credit Score:</label>
+            <input type="number" id="creditScore" required min="0" max="900" placeholder="Enter your credit score">
+
+            <label for="employment">Employment Status:</label>
+            <select id="employment" required>
+                <option value="employed">Employed</option>
+                <option value="self-employed">Self-Employed</option>
+                <option value="unemployed">Unemployed</option>
+            </select>
+            
+            <button type="button" id="submitButton">Check Eligibility</button>
+        </form>
+        
+        <!-- Result Display -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('submitButton').addEventListener('click', async function () {
+            const data = {
+                gender: document.getElementById('gender').value,
+                married: document.getElementById('married').value,
+                dependents: document.getElementById('dependents').value,
+                education: document.getElementById('education').value,
+                income: document.getElementById('income').value,
+                loanAmount: document.getElementById('loanAmount').value,
+                creditScore: document.getElementById('creditScore').value,
+                employment: document.getElementById('employment').value,
+            };
+
+            try {
+                const response = await fetch('/check_eligibility', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                document.getElementById('result').innerHTML = result.result || result.error;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'An error occurred while checking eligibility.';
+            }
+        });
+    </script>
+</body>
+</html>
